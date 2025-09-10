@@ -1,82 +1,36 @@
-# Claude Automation Project Plan
 
-## Overview
-This is an automated project generation system that creates new mini-hard coding projects daily using AI APIs (Claude and OpenAI). The system automatically commits these projects to GitHub on a schedule.
+---
 
-## Architecture
+# plan.md
 
-### Core Components
-1. **Project Generator Script** (`scripts/generate_next.py`)
-   - Selects random programming fields
-   - Calls AI APIs to generate complete projects
-   - Parses generated content and writes files
-   - Commits to Git automatically
+**Objective:**
+Automate generation of a mini-hard project every 5 hours and once daily, committing automatically to GitHub.
 
-2. **GitHub Actions Workflow** (`.github/workflows/auto.yml`)
-   - Runs daily at 09:00 UTC
-   - Runs every 5 hours
-   - Can be triggered manually
-   - Sets up Python environment and dependencies
-   - Executes project generation script
+**Plan:**
+1. **Repository Setup**
+   - Create GitHub repo with `.github/workflows/auto.yml`.
+   - Add `scripts/generate_next.py` for orchestrating AI calls.
 
-3. **Environment Configuration** (`.env`)
-   - API keys for Claude and OpenAI
-   - Provider selection (anthropic/openai)
-   - Model configuration
+2. **AI Prompting**
+   - Use the `claude.md` prompt to instruct Claude Code to produce full runnable projects.
+   - Enforce fenced filename format for clean parsing.
 
-### Programming Fields Rotation
-The system randomly selects from these fields:
-- Backend API
-- Frontend web/app
-- Systems programming
-- Data engineering
-- ML/AI
-- Distributed systems
-- DevOps/infrastructure
-- Databases
-- Networking
-- Security
-- Compilers/interpreters
-- Robotics/IoT
-- Game development
-- Scripting/automation
+3. **Project Rotation**
+   - Randomly select a programming field (backend, ML, game dev, etc.) on each run.
+   - Generate a fresh project under a dated folder (YYYY-MM-DD-<slug>).
 
-### Project Structure
-Generated projects follow this pattern:
-- Folder name: `YYYY-MM-DD-<field-slug>`
-- Contains complete runnable code (200-600 LOC)
-- Includes tests, README, and build files
-- Non-trivial logic implementation
-- Minimal external dependencies
+4. **Workflow Automation**
+   - Schedule GitHub Actions at 09:00 UTC daily and every 5 hours.
+   - Workflow runs Python, installs deps, calls generator script.
+   - Commit with Conventional Commit format.
 
-## Setup Instructions
+5. **Testing & Quality**
+   - Ensure every project includes tests.
+   - Limit size to ~200–600 LOC.
+   - Require clear README with instructions.
 
-1. **Environment Variables**
-   Set these in `.env` file:
-   ```
-   PROVIDER=openai  # or anthropic
-   ANTHROPIC_API_KEY=your_claude_key
-   OPENAI_API_KEY=your_openai_key
-   MODEL_NAME=gpt-4  # optional, defaults based on provider
-   ```
+6. **Scalability**
+   - Store API keys (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`) as GitHub secrets.
+   - Allow switching between Claude and OpenAI easily.
 
-2. **GitHub Repository Secrets**
-   - `ANTHROPIC_API_KEY`: Your Claude API key
-   - `OPENAI_API_KEY`: Your OpenAI API key
-   - `GITHUB_TOKEN`: Automatically provided by GitHub Actions
-
-3. **Repository Variables (Optional)**
-   - `PROVIDER`: "anthropic" or "openai" (default: openai)
-   - `MODEL_NAME`: Specific model to use
-
-## Automation Schedule
-- **Daily**: 09:00 UTC every day
-- **Frequent**: Every 5 hours throughout the day
-- **Manual**: Can be triggered via GitHub Actions UI
-
-## Quality Assurance
-- Projects must have non-trivial logic
-- Include comprehensive README files
-- Have working tests
-- Be runnable from clean clone
-- Follow best practices for the chosen field
+---

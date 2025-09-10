@@ -1,80 +1,41 @@
-# Task Management for Claude Automation
+```
 
-## Current Tasks
+# task.md
 
-###  Completed Tasks
-- [x] Set up project structure and directories
-- [x] Create environment configuration (`.env`) 
-- [x] Implement main project generator script (`scripts/generate_next.py`)
-- [x] Set up GitHub Actions workflow (`.github/workflows/auto.yml`)
-- [x] Create requirements.txt with necessary dependencies
-- [x] Update documentation files (plan.md, task.md)
+### Tasks
 
-### =€ Next Steps
-- [ ] Generate first sample project to test the system
-- [ ] Initialize Git repository and configure remote
-- [ ] Set up GitHub repository secrets for API keys
-- [ ] Test manual workflow dispatch
-- [ ] Monitor automated generation schedule
+1. **Repository Bootstrapping**
+   - [ ] Create GitHub repository `auto-projects`.
+   - [ ] Add `.gitignore` and `requirements.txt`.
 
-## Technical Implementation Details
+2. **Claude Prompt Integration**
+   - [ ] Save the `claude.md` file with full AI instructions.
+   - [ ] Implement parser in `scripts/generate_next.py` to handle fenced filename outputs.
 
-### Scripts/generate_next.py Features
--  Support for both Anthropic (Claude) and OpenAI APIs
--  Random field selection from 14 programming domains
--  Automatic folder naming with UTC dates
--  Robust prompt engineering for project generation
--  File parsing from AI responses using regex
--  Git integration for automatic commits
--  Error handling and logging
+3. **Workflow Setup**
+   - [ ] Write `.github/workflows/auto.yml` with daily + 5-hour cron.
+   - [ ] Configure git user/email inside workflow.
+   - [ ] Test commit cycle manually with `workflow_dispatch`.
 
-### GitHub Actions Workflow Features
--  Scheduled execution (daily + every 5 hours)
--  Manual dispatch capability
--  Python 3.11 environment setup
--  Dependency installation
--  Git configuration
--  Environment variable management
--  Automatic pushing to main branch
+4. **Project Generation Script**
+   - [ ] Implement logic to:
+       - Choose random programming field.
+       - Prompt Claude Code.
+       - Parse outputs into new dated folder.
+       - Ensure fallback project if AI fails.
 
-### Environment Configuration
--  API key management for both providers
--  Provider selection flexibility
--  Model configuration options
--  Security through environment variables
+5. **Testing & Validation**
+   - [ ] Confirm generated projects are non-trivial.
+   - [ ] Run tests included by Claude.
+   - [ ] Validate README run instructions.
 
-## Quality Targets
+6. **Secrets & Config**
+   - [ ] Add GitHub secrets: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`.
+   - [ ] Add Actions variables: `PROVIDER`, `MODEL_NAME`.
 
-Each generated project should include:
-- [ ] 200-600 lines of code
-- [ ] Non-trivial algorithmic logic
-- [ ] Complete README with setup instructions
-- [ ] Working test suite
-- [ ] Minimal external dependencies
-- [ ] Build/deployment configuration
-- [ ] Sample data or fixtures (if applicable)
+7. **Continuous Improvement**
+   - [ ] Monitor output quality.
+   - [ ] Tune prompt if outputs are too trivial or too large.
+   - [ ] Add optional project themes via `TOPIC_PLAN`.
 
-## Deployment Checklist
-
-### Repository Setup
-- [ ] Initialize git repository
-- [ ] Add remote GitHub repository
-- [ ] Configure GitHub repository secrets:
-  - [ ] ANTHROPIC_API_KEY
-  - [ ] OPENAI_API_KEY
-- [ ] Set repository variables (optional):
-  - [ ] PROVIDER
-  - [ ] MODEL_NAME
-
-### Testing
-- [ ] Test local execution: `python scripts/generate_next.py`
-- [ ] Verify file generation and parsing
-- [ ] Test both API providers
-- [ ] Validate git commit functionality
-- [ ] Test GitHub Actions workflow
-
-### Monitoring
-- [ ] Set up notifications for workflow failures
-- [ ] Monitor API rate limits and costs
-- [ ] Track project generation success rates
-- [ ] Review generated project quality regularly
+```
