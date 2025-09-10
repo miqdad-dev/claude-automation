@@ -1,16 +1,16 @@
-# Database Creation Project
+# Simple Database Project
 
-This project creates and populates a SQLite database with user information using Flask and SQLAlchemy.
+This project implements a simple database for managing a book collection using Python and SQLite3.
 
-## How It Works
+## How it works
 
-The project uses a Flask application to handle HTTP requests. When a POST request is made to the '/user' endpoint with a JSON payload containing 'name' and 'email' fields, a new user is created in the database.
+The user is presented with a command line interface that allows them to interact with the database. They can create a table, add a book, list all books, and delete a book.
 
-## How to Run
+## How to run
 
-1. Build the Docker image: `docker build -t my-python-app .`
-2. Run the Docker image: `docker run -p 4000:80 my-python-app`
+1. Ensure you have Python installed on your system.
+2. Run the program using the command `python main.py`.
 
-You can then make a POST request to 'localhost:4000/user' with a JSON payload to create a new user.
+## Example usage
 
-Example:
+Here is an example of how to use the program:
