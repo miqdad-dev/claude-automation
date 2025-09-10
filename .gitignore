@@ -57,3 +57,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Claude Code settings
+.claude/
