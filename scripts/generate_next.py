@@ -78,16 +78,25 @@ class ProjectGenerator:
         
         print(f"Using provider: {self.provider} with model: {self.model_name}")
 
-    def generate_folder_name(self) -> str:
-        """Generate folder name with current UTC date and random slug."""
-        now = datetime.now(timezone.utc)
-        date_str = now.strftime("%Y-%m-%d")
-        
-        # Generate a random short slug
-        field = random.choice(PROGRAMMING_FIELDS)
-        slug = field.replace(" ", "-").replace("/", "-")[:15]
-        
-        return f"{date_str}-{slug}"
+    def generate_folder_name(self, field: str) -> str:
+        """Generate folder name based on project field and content."""
+        # Clean field name for folder
+        base_name = field.replace(" ", "-").replace("/", "-")
+        return base_name
+    
+    def extract_project_name_from_content(self, content: str) -> Optional[str]:
+        """Extract project name from README content."""
+        lines = content.split('\n')
+        for line in lines:
+            # Look for markdown headers that might contain project names
+            if line.startswith('# '):
+                project_name = line[2:].strip()
+                # Clean up the name for folder use
+                clean_name = re.sub(r'[^\w\s-]', '', project_name)
+                clean_name = re.sub(r'\s+', '-', clean_name.strip()).lower()
+                if len(clean_name) > 3 and len(clean_name) < 50:
+                    return clean_name
+        return None
 
     def call_anthropic_api(self, prompt: str) -> str:
         """Call Anthropic Claude API."""
@@ -213,7 +222,7 @@ class ProjectGenerator:
         try:
             # Select random field and generate folder name
             field = random.choice(PROGRAMMING_FIELDS)
-            folder_name = self.generate_folder_name()
+            folder_name = self.generate_folder_name(field)
             
             print(f"Generating project for field: {field}")
             print(f"Project folder: {folder_name}")
@@ -230,6 +239,13 @@ class ProjectGenerator:
                 return
             
             print(f"Parsed {len(files)} files from AI response")
+            
+            # Try to extract a better project name from the content
+            if 'README.md' in files:
+                extracted_name = self.extract_project_name_from_content(files['README.md'])
+                if extracted_name:
+                    folder_name = extracted_name
+                    print(f"Updated folder name to: {folder_name}")
             
             # Write files to disk
             self.write_files(folder_name, files)
