@@ -26,7 +26,7 @@ PROGRAMMING_FIELDS = [
     "game dev", "scripting/automation"
 ]
 
-PROJECT_PROMPT = """You are Claude Code. Output a COMPLETE, RUNNABLE "mini-hard" project with non-trivial logic.
+PROJECT_PROMPT = """Create a COMPLETE, RUNNABLE "mini-hard" project with non-trivial logic.
 
 GOAL
 - Build a new mini-hard project (not trivial "hello world") from the field: {field}
