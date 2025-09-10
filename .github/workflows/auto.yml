@@ -1,0 +1,57 @@
+name: Auto Project Generator
+
+on:
+  schedule:
+    # Daily at 09:00 UTC
+    - cron: "0 9 * * *"
+    # Every 3 minutes for testing
+    - cron: "*/3 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-project:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Configure Git
+      run: |
+        git config --global user.name "Auto Project Generator"
+        git config --global user.email "auto-gen@users.noreply.github.com"
+    
+    - name: Generate new project
+      env:
+        PROVIDER: ${{ vars.PROVIDER || 'openai' }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MODEL_NAME: ${{ vars.MODEL_NAME || '' }}
+      run: |
+        cd scripts
+        python generate_next.py
+    
+    - name: Push changes
+      run: |
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "Changes detected, pushing to repository..."
+          git push origin main
+        else
+          echo "No changes to push."
+        fi

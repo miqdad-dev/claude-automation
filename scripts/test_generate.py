@@ -1,0 +1,464 @@
+#!/usr/bin/env python3
+"""
+Test Project Generator - Creates a sample project without API calls for testing
+"""
+
+import os
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+def create_sample_project():
+    """Create a sample project for testing the system."""
+    # Generate folder name
+    now = datetime.now(timezone.utc)
+    date_str = now.strftime("%Y-%m-%d")
+    folder_name = f"{date_str}-test-project"
+    
+    print(f"Creating test project: {folder_name}")
+    
+    # Create project directory
+    project_path = Path("..") / folder_name
+    project_path.mkdir(exist_ok=True)
+    
+    # Sample project files
+    files = {
+        "README.md": """# Test Project - Simple File Organizer
+
+## What it does
+A command-line tool that organizes files in a directory by their extensions into subdirectories.
+
+## How it works
+- Scans a target directory for files
+- Groups files by extension
+- Creates subdirectories for each extension
+- Moves files to appropriate subdirectories
+
+## How to run
+```bash
+python src/file_organizer.py --directory /path/to/organize
+python src/file_organizer.py --directory . --dry-run  # Test mode
+```
+
+## Example usage
+```bash
+# Organize current directory
+python src/file_organizer.py --directory .
+
+# Organize with dry run to see what would happen
+python src/file_organizer.py --directory ./downloads --dry-run
+```
+
+## Architecture & tradeoffs
+- Simple CLI interface using argparse
+- File operations with proper error handling
+- Dry-run mode for safety
+- Configurable file type mappings
+- Preserves original timestamps and permissions
+
+## Features
+- Recursive directory scanning
+- Configurable file type categories
+- Undo functionality via history tracking
+- Progress reporting for large directories
+""",
+
+        "src/file_organizer.py": '''#!/usr/bin/env python3
+"""
+File Organizer - Organize files by extension into subdirectories
+"""
+
+import os
+import shutil
+import argparse
+import json
+from pathlib import Path
+from collections import defaultdict
+from datetime import datetime
+
+
+class FileOrganizer:
+    def __init__(self, base_directory, dry_run=False):
+        self.base_directory = Path(base_directory)
+        self.dry_run = dry_run
+        self.history = []
+        
+        # File type mappings
+        self.file_categories = {
+            'images': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'],
+            'documents': ['.pdf', '.doc', '.docx', '.txt', '.rtf'],
+            'videos': ['.mp4', '.avi', '.mov', '.mkv', '.wmv'],
+            'audio': ['.mp3', '.wav', '.flac', '.aac', '.ogg'],
+            'archives': ['.zip', '.rar', '.7z', '.tar', '.gz'],
+            'code': ['.py', '.js', '.html', '.css', '.java', '.cpp']
+        }
+    
+    def get_category(self, file_extension):
+        """Get category for file extension."""
+        for category, extensions in self.file_categories.items():
+            if file_extension.lower() in extensions:
+                return category
+        return 'others'
+    
+    def scan_directory(self):
+        """Scan directory and categorize files."""
+        files_by_category = defaultdict(list)
+        
+        for file_path in self.base_directory.iterdir():
+            if file_path.is_file():
+                category = self.get_category(file_path.suffix)
+                files_by_category[category].append(file_path)
+        
+        return dict(files_by_category)
+    
+    def organize_files(self, files_by_category):
+        """Organize files into subdirectories."""
+        operations = []
+        
+        for category, files in files_by_category.items():
+            if not files:
+                continue
+                
+            # Create category directory
+            category_dir = self.base_directory / category
+            
+            if not self.dry_run:
+                category_dir.mkdir(exist_ok=True)
+            
+            print(f"\\nProcessing {category} ({len(files)} files):")
+            
+            for file_path in files:
+                destination = category_dir / file_path.name
+                
+                if self.dry_run:
+                    print(f"  [DRY RUN] Would move: {file_path.name} -> {category}/")
+                else:
+                    try:
+                        shutil.move(str(file_path), str(destination))
+                        print(f"  Moved: {file_path.name} -> {category}/")
+                        
+                        operations.append({
+                            'operation': 'move',
+                            'source': str(file_path),
+                            'destination': str(destination),
+                            'timestamp': datetime.now().isoformat()
+                        })
+                    except Exception as e:
+                        print(f"  Error moving {file_path.name}: {e}")
+        
+        if not self.dry_run:
+            self.save_history(operations)
+        
+        return operations
+    
+    def save_history(self, operations):
+        """Save operation history for undo functionality."""
+        history_file = self.base_directory / '.organizer_history.json'
+        
+        try:
+            if history_file.exists():
+                with open(history_file, 'r') as f:
+                    history = json.load(f)
+            else:
+                history = []
+            
+            history.extend(operations)
+            
+            with open(history_file, 'w') as f:
+                json.dump(history, f, indent=2)
+                
+        except Exception as e:
+            print(f"Warning: Could not save history: {e}")
+    
+    def undo_last_operation(self):
+        """Undo the last organization operation."""
+        history_file = self.base_directory / '.organizer_history.json'
+        
+        if not history_file.exists():
+            print("No history found - nothing to undo.")
+            return
+        
+        try:
+            with open(history_file, 'r') as f:
+                history = json.load(f)
+            
+            if not history:
+                print("No operations to undo.")
+                return
+            
+            # Get the last batch of operations (same timestamp)
+            last_timestamp = history[-1]['timestamp']
+            last_operations = [op for op in history if op['timestamp'] == last_timestamp]
+            
+            print(f"Undoing {len(last_operations)} operations...")
+            
+            for operation in reversed(last_operations):
+                if operation['operation'] == 'move':
+                    try:
+                        shutil.move(operation['destination'], operation['source'])
+                        print(f"  Restored: {Path(operation['destination']).name}")
+                    except Exception as e:
+                        print(f"  Error restoring {Path(operation['destination']).name}: {e}")
+            
+            # Remove undone operations from history
+            remaining_history = [op for op in history if op['timestamp'] != last_timestamp]
+            
+            with open(history_file, 'w') as f:
+                json.dump(remaining_history, f, indent=2)
+                
+        except Exception as e:
+            print(f"Error during undo: {e}")
+    
+    def show_preview(self):
+        """Show what would be organized."""
+        files_by_category = self.scan_directory()
+        
+        print(f"\\nScanning directory: {self.base_directory}")
+        print(f"Found {sum(len(files) for files in files_by_category.values())} files")
+        print("\\nPreview of organization:")
+        
+        for category, files in files_by_category.items():
+            if files:
+                print(f"\\n{category.upper()} ({len(files)} files):")
+                for file_path in files[:5]:  # Show first 5 files
+                    print(f"  - {file_path.name}")
+                if len(files) > 5:
+                    print(f"  ... and {len(files) - 5} more files")
+        
+        return files_by_category
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Organize files by extension')
+    parser.add_argument('--directory', '-d', default='.', help='Directory to organize')
+    parser.add_argument('--dry-run', action='store_true', help='Preview changes without moving files')
+    parser.add_argument('--undo', action='store_true', help='Undo last organization')
+    parser.add_argument('--preview', action='store_true', help='Show preview of what would be organized')
+    
+    args = parser.parse_args()
+    
+    organizer = FileOrganizer(args.directory, dry_run=args.dry_run)
+    
+    if args.undo:
+        organizer.undo_last_operation()
+    elif args.preview:
+        organizer.show_preview()
+    else:
+        files_by_category = organizer.show_preview()
+        
+        if not args.dry_run:
+            confirm = input("\\nProceed with organization? (y/N): ")
+            if confirm.lower() != 'y':
+                print("Organization cancelled.")
+                return
+        
+        organizer.organize_files(files_by_category)
+        
+        if args.dry_run:
+            print("\\n[DRY RUN] No files were actually moved.")
+        else:
+            print("\\nOrganization complete! Use --undo to reverse if needed.")
+
+
+if __name__ == "__main__":
+    main()
+''',
+
+        "tests/test_file_organizer.py": '''#!/usr/bin/env python3
+"""
+Tests for File Organizer
+"""
+
+import unittest
+import tempfile
+import shutil
+from pathlib import Path
+import sys
+import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+from file_organizer import FileOrganizer
+
+
+class TestFileOrganizer(unittest.TestCase):
+    
+    def setUp(self):
+        """Set up test directory with sample files."""
+        self.test_dir = tempfile.mkdtemp()
+        self.test_path = Path(self.test_dir)
+        
+        # Create sample files
+        test_files = [
+            'photo.jpg', 'document.pdf', 'video.mp4', 'song.mp3',
+            'archive.zip', 'script.py', 'unknown.xyz'
+        ]
+        
+        for filename in test_files:
+            (self.test_path / filename).touch()
+        
+        self.organizer = FileOrganizer(self.test_path, dry_run=True)
+    
+    def tearDown(self):
+        """Clean up test directory."""
+        shutil.rmtree(self.test_dir)
+    
+    def test_get_category(self):
+        """Test file categorization."""
+        self.assertEqual(self.organizer.get_category('.jpg'), 'images')
+        self.assertEqual(self.organizer.get_category('.pdf'), 'documents')
+        self.assertEqual(self.organizer.get_category('.mp4'), 'videos')
+        self.assertEqual(self.organizer.get_category('.mp3'), 'audio')
+        self.assertEqual(self.organizer.get_category('.zip'), 'archives')
+        self.assertEqual(self.organizer.get_category('.py'), 'code')
+        self.assertEqual(self.organizer.get_category('.xyz'), 'others')
+    
+    def test_scan_directory(self):
+        """Test directory scanning."""
+        files_by_category = self.organizer.scan_directory()
+        
+        self.assertIn('images', files_by_category)
+        self.assertIn('documents', files_by_category)
+        self.assertIn('videos', files_by_category)
+        self.assertIn('audio', files_by_category)
+        self.assertIn('archives', files_by_category)
+        self.assertIn('code', files_by_category)
+        self.assertIn('others', files_by_category)
+        
+        # Check specific files are categorized correctly
+        image_files = [f.name for f in files_by_category['images']]
+        self.assertIn('photo.jpg', image_files)
+    
+    def test_dry_run(self):
+        """Test dry run doesn't move files."""
+        files_by_category = self.organizer.scan_directory()
+        operations = self.organizer.organize_files(files_by_category)
+        
+        # In dry run, no operations should be recorded
+        self.assertEqual(len(operations), 0)
+        
+        # Original files should still exist
+        self.assertTrue((self.test_path / 'photo.jpg').exists())
+        self.assertTrue((self.test_path / 'document.pdf').exists())
+    
+    def test_actual_organization(self):
+        """Test actual file organization."""
+        organizer = FileOrganizer(self.test_path, dry_run=False)
+        files_by_category = organizer.scan_directory()
+        operations = organizer.organize_files(files_by_category)
+        
+        # Check that directories were created
+        self.assertTrue((self.test_path / 'images').exists())
+        self.assertTrue((self.test_path / 'documents').exists())
+        
+        # Check that files were moved
+        self.assertTrue((self.test_path / 'images' / 'photo.jpg').exists())
+        self.assertTrue((self.test_path / 'documents' / 'document.pdf').exists())
+        
+        # Check that original files don't exist in root
+        self.assertFalse((self.test_path / 'photo.jpg').exists())
+        self.assertFalse((self.test_path / 'document.pdf').exists())
+    
+    def test_case_insensitive_extensions(self):
+        """Test that file extensions are handled case-insensitively."""
+        (self.test_path / 'IMAGE.JPG').touch()
+        
+        files_by_category = self.organizer.scan_directory()
+        
+        # Should categorize uppercase extension correctly
+        image_files = [f.name for f in files_by_category['images']]
+        self.assertIn('IMAGE.JPG', image_files)
+
+
+if __name__ == '__main__':
+    unittest.main()
+''',
+
+        "Makefile": '''# File Organizer Makefile
+
+.PHONY: test run clean install help
+
+help:
+\t@echo "Available commands:"
+\t@echo "  install  - Install dependencies (if any)"
+\t@echo "  test     - Run unit tests"
+\t@echo "  run      - Run the file organizer with preview"
+\t@echo "  clean    - Remove temporary files"
+
+install:
+\t@echo "No external dependencies required for this project"
+
+test:
+\t@echo "Running tests..."
+\tpython -m pytest tests/ -v || python -m unittest discover tests/ -v
+
+run:
+\t@echo "Running file organizer with preview..."
+\tpython src/file_organizer.py --preview
+
+clean:
+\t@echo "Cleaning temporary files..."
+\tfind . -name "*.pyc" -delete
+\tfind . -name "__pycache__" -delete
+\tfind . -name ".organizer_history.json" -delete
+
+# Development commands
+dev-run:
+\tpython src/file_organizer.py --directory ./sample_files --dry-run
+
+sample-files:
+\t@mkdir -p sample_files
+\t@touch sample_files/photo.jpg sample_files/document.pdf sample_files/video.mp4
+\t@touch sample_files/song.mp3 sample_files/script.py sample_files/archive.zip
+\t@echo "Created sample files in ./sample_files/"
+''',
+
+        ".gitignore": '''# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Test files
+.coverage
+htmlcov/
+.pytest_cache/
+
+# History files
+.organizer_history.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+''',
+
+        "requirements.txt": '''# No external dependencies required
+# This project uses only Python standard library
+'''
+    }
+    
+    # Write files
+    for filepath, content in files.items():
+        full_path = project_path / filepath
+        full_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(full_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        print(f"Created: {filepath}")
+    
+    print(f"\nSample project created successfully: {folder_name}")
+    print("You can test it by running:")
+    print(f"  cd {folder_name}")
+    print("  make test")
+    print("  make run")
+
+
+if __name__ == "__main__":
+    create_sample_project()
