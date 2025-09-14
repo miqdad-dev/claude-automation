@@ -1,17 +1,15 @@
-# SQLite Database Manager
+# Databases Project
 
-This is a command line application to manage SQLite databases. It allows for the creation, deletion, and modification of databases, tables, and records.
+This project is a simple Flask application that uses SQLAlchemy to interact with a SQLite database. It provides two endpoints to create and retrieve users.
 
-## How It Works
+## What it does
 
-The application uses Python's built-in sqlite3 module to interact with SQLite databases. The user interface is command-line based.
+The application allows you to create a new user with a unique username and to retrieve the information of a user by its id.
 
-## How to Run
+## How it works
 
-1. Ensure you have Python 3.6+ installed.
-2. Clone this repository.
-3. Navigate to the databases folder.
-4. Run `python main.py`.
-5. Follow the prompts.
+The application uses Flask as a web framework, SQLAlchemy as an ORM to interact with the SQLite database, and Flask-Migrate to handle database migrations.
 
-## Example Usage
+## How to run
+
+1. First, install the required packages:
