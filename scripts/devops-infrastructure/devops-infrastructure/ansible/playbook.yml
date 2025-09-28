@@ -1,0 +1,32 @@
+---
+- hosts: docker
+  tasks:
+    - name: Ensure docker is installed.
+      apt:
+        name: docker.io
+        state: present
+      become: yes
+
+    - name: Ensure docker-compose is installed.
+      apt:
+        name: docker-compose
+        state: present
+      become: yes
+
+    - name: Ensure directory exists for docker-compose file.
+      file:
+        path: /opt/docker-compose-example
+        state: directory
+      become: yes
+
+    - name: Copy docker-compose file to remote.
+      copy:
+        src: ../docker-compose.yml
+        dest: /opt/docker-compose-example/docker-compose.yml
+      become: yes
+
+    - name: Run docker-compose up -d.
+      command: docker-compose up -d
+      args:
+        chdir: /opt/docker-compose-example
+      become: yes
