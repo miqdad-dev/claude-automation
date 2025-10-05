@@ -1,0 +1,13 @@
+{
+    "name": "frontend-web-app",
+    "version": "1.0.0",
+    "description": "A simple e-commerce shopping cart feature",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"No tests specified\"",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
