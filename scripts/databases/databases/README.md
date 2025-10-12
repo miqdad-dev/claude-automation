@@ -1,15 +1,16 @@
-# Databases Project
+# Mini-hard Database Project
 
-This project is a simple Flask application that uses SQLAlchemy to interact with a SQLite database. It provides two endpoints to create and retrieve users.
+This project reads data from a CSV file and writes it to a SQLite database. It then reads the data from the SQLite database and prints it.
 
-## What it does
+## How It Works
 
-The application allows you to create a new user with a unique username and to retrieve the information of a user by its id.
+The project uses a Python script to interact with the SQLite database. It uses the pandas library to read the CSV file and to handle the data.
 
-## How it works
+## How to Run
 
-The application uses Flask as a web framework, SQLAlchemy as an ORM to interact with the SQLite database, and Flask-Migrate to handle database migrations.
+- Build the Docker image: `docker build -t databases .`
+- Run the Docker image: `docker run -it --rm --name my-running-app databases`
 
-## How to run
+## Example Usage
 
-1. First, install the required packages:
+When the project is run, it will print the data from the SQLite database, which will look like this:

@@ -1,0 +1,9 @@
+[MASTER]
+disable=
+    C0114, # missing-module-docstring
+    C0116, # missing-function-docstring
+    R0801, # similar lines in 2 or more files
+    R0903, # too-few-public-methods
+    C0103, # variable name doesn't conform to snake_case naming style
+    W0621, # redefined-outer-name
+    W0611, # unused-import
