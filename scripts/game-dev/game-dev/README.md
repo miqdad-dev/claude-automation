@@ -1,11 +1,22 @@
-# PySnake
+# Mini Hard Game Project: 2D Array Maze Game
 
-This is a simple implementation of the classic Snake game in Python using the curses library. 
+This is a simple command-line game where a player needs to navigate through a 2D maze from start point (S) to end point (E). The game uses Node.js for implementation.
 
-# How it works
+## What it does
 
-The game starts with a snake of size 1 at a random position on the board, and an apple at another random position. The player can move the snake around the board (up, down, left, right). If the snake eats an apple, it grows in size by 1, and a new apple appears at a random position. If the snake hits the wall or its own body, the game ends.
+The game presents a randomly generated 2D maze where a player starts at position (S) and the goal is to reach the end (E). The player can move either up, down, left, or right. Walls are represented with `#` and open paths are represented with `.`.
 
-# How to run
+## How it works
 
-You need Python 3 to run this game. The commands to run are:
+The game uses a Depth-first search (DFS) algorithm to generate the maze. The player's position is tracked and updated after each move. The game ends when the player reaches the end point (E).
+
+## How to run
+
+1. Clone the repository.
+2. Navigate to the root directory.
+3. Run `npm install` to install dependencies.
+4. Run `node game.js` to start the game.
+
+## Example Usage
+
+The game will display the current state of the maze after each move. Here is an example of the game:
