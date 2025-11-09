@@ -1,0 +1,6 @@
+[MASTER]
+disable=
+    C,
+    R,
+    W,
+    I

@@ -1,13 +1,11 @@
-# Simple TCP Server
+# Simple Chat Room Application
 
-This is a simple TCP server built in Python. The server listens for incoming connections and receives messages from the clients. It then sends back an acknowledgement message to the client.
+This is a simple python implementation of a multi-threaded chat room application using sockets.
 
-## How it Works
+## How it works
 
-The server uses the socket library in Python to establish a TCP server. It listens on a specified port for incoming connections. When a client connects, it sends a message to the server. The server reads the message and sends an acknowledgement back to the client.
+The server is set up to listen to incoming client connections. When a client connects, they are asked for their nickname and this is stored. Any message a client sends is then broadcast to all other connected clients.
 
-## How to Run
+## How to run
 
-1. Clone the repository and navigate to the project directory.
-
-2. Run the server script:
+In one terminal, start the server:
