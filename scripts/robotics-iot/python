@@ -1,0 +1,13 @@
+from robot import Robot
+import time
+
+r = Robot(5, 6)  # The numbers are the GPIO pins connected to the motors
+
+r.forward(2)  # The robot moves forward for 2 seconds
+time.sleep(1)  # Wait for 1 second
+r.turn_right(1)  # The robot turns right for 1 second
+time.sleep(1)  # Wait for 1 second
+r.turn_left(1)  # The robot turns left for 1 second
+time.sleep(1)  # Wait for 1 second
+r.stop()  # The robot stops
+r.cleanup()  # Cleanup the GPIO
