@@ -1,22 +1,23 @@
-# Mini Hard Game Project: 2D Array Maze Game
+# Mini Snake Game
 
-This is a simple command-line game where a player needs to navigate through a 2D maze from start point (S) to end point (E). The game uses Node.js for implementation.
+This is a simple implementation of the classic game Snake, using Python's built-in `curses` library for text-based user interfaces.
 
-## What it does
+## What it Does
 
-The game presents a randomly generated 2D maze where a player starts at position (S) and the goal is to reach the end (E). The player can move either up, down, left, or right. Walls are represented with `#` and open paths are represented with `.`.
+The game starts with a small snake in the middle of the screen, moving in a random direction. The snake can be controlled by the arrow keys. There is a piece of food randomly placed on the screen. When the snake eats the food, it grows longer and the score increases. The game ends when the snake runs into the screen border or into itself.
 
-## How it works
+## How it Works
 
-The game uses a Depth-first search (DFS) algorithm to generate the maze. The player's position is tracked and updated after each move. The game ends when the player reaches the end point (E).
+The game logic is handled by the `SnakeGame` class. This class holds the state of the game and handles user input and game updates.
 
-## How to run
+The game screen is drawn using `curses` library functions. The snake is represented as a deque of coordinates on the screen, and the food as a single coordinate.
 
-1. Clone the repository.
-2. Navigate to the root directory.
-3. Run `npm install` to install dependencies.
-4. Run `node game.js` to start the game.
+On each game update, the snake moves in the current direction. If the new position of the snake's head is the same as the food's position, the food is eaten and a new piece of food is placed. If the new position is outside the screen border or in the snake's body, the game ends.
+
+## How to Run
+
+This game requires Python 3.5+ and the `curses` library. To play the game, clone this repository and run `python snake_game.py`.
 
 ## Example Usage
 
-The game will display the current state of the maze after each move. Here is an example of the game:
+Here is a typical game session:
