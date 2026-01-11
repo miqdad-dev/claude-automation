@@ -1,15 +1,13 @@
-# Scripting Automation
+# Scripting Automation Mini-Project
 
-This script automates the process of downloading and extracting zip files from a given URL. It can be used in any situation where there's a need to automate file downloads and extraction. This script checks whether a file already exists, download it if not, and then extract its content.
+## What It Does
 
-## How it works
+This script automates the process of downloading, extracting and counting the number of lines in all .txt files from a zipped file located on a given URL.
 
-The script uses Python's `requests` and `zipfile` libraries to handle the downloading and extraction of the zip files. It checks whether a file already exists in the given directory and skips downloading if it does. It then extracts the file into the same directory.
+## How It Works
 
-## How to run
+The script uses Python's built-in modules (urllib, zipfile, and os) to download, extract and count lines from the text files respectively. 
 
-1. Clone the repository.
-2. Navigate to the root folder.
-3. Run `python automation.py`
+## How to Run
 
-## Example usage
+Make sure Python3 is installed on your machine. You can run:
