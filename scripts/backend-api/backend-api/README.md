@@ -1,27 +1,21 @@
-# Simple RESTful API with Node.js and Express
+# User Registration API
 
-This is a simple RESTful API built with Node.js and Express, which supports CRUD operations on a list of users stored in memory.
+This is a simple User Registration API built with Flask, Flask-RESTful, and SQLAlchemy.
 
-## How It Works
+## What it does
+This API allows users to register by providing a unique username.
 
-The API has five endpoints:
+## How it works
+It uses Flask-RESTful for creating the API resources and SQLAlchemy as the ORM. It uses an SQLite database to store the user data.
 
-- GET /users: Returns a list of all users.
-- POST /users: Adds a new user to the list.
-- GET /users/:id: Returns the user with the given id, or 404 if no such user exists.
-- PUT /users/:id: Updates the user with the given id, or 404 if no such user exists.
-- DELETE /users/:id: Deletes the user with the given id, or 404 if no such user exists.
+## How to run
+1. Install the requirements:   
+   `pip install -r requirements.txt`
+2. Run the application:  
+   `python app.py`
 
-The users are stored in an in-memory array, so they will be lost if the server is restarted.
+## Example usage
+`POST /register` with JSON `{ "name": "username" }`.
 
-## How to Run
-
-1. Install dependencies: `npm install`
-2. Start the server: `npm start`
-3. Run tests: `npm test`
-
-## Example Usage
-
-GET /users
-
-Response:
+## Architecture & Tradeoffs
+The application uses the Flask web framework due to its simplicity and flexibility. SQLAlchemy is used as the ORM to handle database operations. The tradeoff is that this architecture may not be suitable for larger scale applications with more complex requirements.
