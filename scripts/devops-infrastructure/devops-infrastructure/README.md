@@ -1,26 +1,26 @@
-# Docker Nginx Static Website
+# Docker Compose App
 
-This project demonstrates how to use Docker to host a static website using Nginx.
+This application uses Docker Compose to manage a multi-container application that includes a Node.js/Express.js app, a Postgres database, and a Redis cache.
 
-## How it works
+## How It Works
 
-The Dockerfile in this project is based on the nginx:alpine image. It copies the contents of the `website` directory into the appropriate directory for Nginx to serve them.
+The application uses Docker Compose to define and run the multi-container application. The `docker-compose.yml` file defines the services that make up the application, which include the Node.js app, the Postgres database, and the Redis cache. The services are isolated in their own containers, but can interact with each other as defined in the `docker-compose.yml` file.
 
-## How to run
+The Node.js app uses the `pg` and `redis` modules to interact with the Postgres database and Redis cache, respectively.
 
-1. Install Docker.
-2. Clone this repository and navigate to its directory.
-3. Build the Docker image: `docker build -t my-nginx .`
-4. Run the Docker container: `docker run -d -p 8080:80 my-nginx`
+## How to Run
 
-The website is now available at `http://localhost:8080`.
+1. Install Docker and Docker Compose.
+2. Clone this repository and navigate to the `devops-infrastructure` directory.
+3. Run `docker-compose up` to start the services.
+4. Visit `http://localhost:5000` in your browser.
 
-## Example usage
+## Example Usage
 
-After running the Docker container as described above, simply navigate to `http://localhost:8080` in your web browser. You should see a simple static website.
+When you visit `http://localhost:5000`, the application queries the current timestamp from the Postgres database, stores it in the Redis cache, then retrieves it from the cache and displays it.
 
-## Notes on architecture & tradeoffs
+## Architecture & Tradeoffs
 
-This project is very simple, so there aren't many tradeoffs to discuss. One potential improvement could be to use a Docker volume to host the website files, which would allow them to be updated without rebuilding the Docker image. However, this would complicate the setup slightly and was deemed unnecessary for this project.
+This application uses a simple architecture with three services, each running in its own container. This allows each service to be developed and deployed independently, but also allows them to interact as needed.
 
-The use of Docker allows this server to be run on any system that supports Docker, without needing to install and configure Nginx manually.
+However, there are tradeoffs associated with this architecture. Docker can introduce additional complexity, especially for developers unfamiliar with containerization. Additionally, while Docker Compose makes it easy to define and run multi-container applications, it may not be suitable for production environments, which may require a more robust orchestration tool like Kubernetes.
