@@ -1,11 +1,17 @@
-# Machine Learning/AI Mini-Hard Project
+# ML-AI
 
-This project trains a neural network model to predict the onset of diabetes based on diagnostic measures.
+A simple machine learning model training and prediction script using Python's scikit-learn library. The script uses a RandomForestClassifier to predict the balance scale class based on provided features.
 
-## How It Works
+## How it works
 
-The program uses a Keras model with a sequential architecture, and trains it on a dataset of patient records. The model is then tested on a separate dataset to predict the onset of diabetes.
+The script first imports a dataset from a CSV file. The dataset is then split into a training set and a test set. The Random Forest model is trained on the training set and then used to predict the balance scale class of the test set data. The script then calculates and prints the accuracy of the model.
 
 ## How to Run
 
-1. Install the dependencies:
+You will need Python and the scikit-learn and pandas libraries installed.
+
+1. Clone the repository.
+2. Navigate to the repository directory.
+3. Run `python main.py` to execute the script.
+
+## Example usage
