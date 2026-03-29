@@ -1,16 +1,8 @@
-# Mini-hard Database Project
+# Mini Database Project
+This project is a simple Flask application that uses SQLAlchemy to interact with a SQLite database. The application exposes a REST API to interact with the User table in the database.
 
-This project reads data from a CSV file and writes it to a SQLite database. It then reads the data from the SQLite database and prints it.
-
-## How It Works
-
-The project uses a Python script to interact with the SQLite database. It uses the pandas library to read the CSV file and to handle the data.
+## How it Works
+The application uses Flask and Flask-SQLAchemy to create a web server and interact with the SQLite database. It uses pandas to read a csv file and populate the User table.
 
 ## How to Run
-
-- Build the Docker image: `docker build -t databases .`
-- Run the Docker image: `docker run -it --rm --name my-running-app databases`
-
-## Example Usage
-
-When the project is run, it will print the data from the SQLite database, which will look like this:
+Build the docker image and run it:

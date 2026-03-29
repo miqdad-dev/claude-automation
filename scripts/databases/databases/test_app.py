@@ -1,37 +1,21 @@
 import pytest
-from app import app, db, User
+import app
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    client = app.test_client()
+    app.app.config['TESTING'] = True
+    with app.app.test_client() as client:
+        with app.app.app_context():
+            app.db.create_all()
+        yield client
 
-    with app.app_context():
-        db.create_all()
+def test_get_users(client):
+    rv = client.get('/users')
+    assert b'Alice' in rv.data
+    assert b'Bob' in rv.data
 
-    yield client
-
-    with app.app_context():
-        db.session.remove()
-        db.drop_all()
-
-def test_create_user(client):
-    response = client.post('/users', json={'username': 'test'})
-    assert response.status_code == 201
-    assert response.get_json() == {'id': 1, 'username': 'test'}
-
-def test_create_existing_user(client):
-    client.post('/users', json={'username': 'test'})
-    response = client.post('/users', json={'username': 'test'})
-    assert response.status_code == 400
-
-def test_get_user(client):
-    client.post('/users', json={'username': 'test'})
-    response = client.get('/users/1')
-    assert response.status_code == 200
-    assert response.get_json() == {'id': 1, 'username': 'test'}
-
-def test_get_non_existent_user(client):
-    response = client.get('/users/1')
-    assert response.status_code == 404
+def test_add_user(client):
+    rv = client.post('/users', json={'name': 'John', 'email': 'john@example.com'})
+    assert b'User added successfully' in rv.data
+    rv = client.get('/users')
+    assert b'John' in rv.data
