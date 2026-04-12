@@ -1,23 +1,20 @@
-# Mini Snake Game
+# Mini Puzzle Game
 
-This is a simple implementation of the classic game Snake, using Python's built-in `curses` library for text-based user interfaces.
+This is a simple puzzle game made with HTML, CSS, and JavaScript. The game consists of 8 numbered tiles and an empty space. The goal is to arrange the tiles in ascending order from the top left corner.
 
-## What it Does
+## How It Works
 
-The game starts with a small snake in the middle of the screen, moving in a random direction. The snake can be controlled by the arrow keys. There is a piece of food randomly placed on the screen. When the snake eats the food, it grows longer and the score increases. The game ends when the snake runs into the screen border or into itself.
-
-## How it Works
-
-The game logic is handled by the `SnakeGame` class. This class holds the state of the game and handles user input and game updates.
-
-The game screen is drawn using `curses` library functions. The snake is represented as a deque of coordinates on the screen, and the food as a single coordinate.
-
-On each game update, the snake moves in the current direction. If the new position of the snake's head is the same as the food's position, the food is eaten and a new piece of food is placed. If the new position is outside the screen border or in the snake's body, the game ends.
+The game is built using pure JavaScript. The tiles are created and assigned a position on the game board. An event listener is added to each tile, which moves the tile to the empty space when clicked, if the tile is adjacent to the empty space.
 
 ## How to Run
 
-This game requires Python 3.5+ and the `curses` library. To play the game, clone this repository and run `python snake_game.py`.
+1. Clone this repository.
+2. Open the `index.html` file in a web browser.
 
 ## Example Usage
 
-Here is a typical game session:
+Click on a tile that is adjacent to the empty space to move it. Try to arrange the tiles in ascending order.
+
+## Notes on Architecture & Tradeoffs
+
+This game is implemented using vanilla JavaScript, which keeps the dependencies to a minimum. The tradeoff is that the code may not be as concise or as easy to read as it would be if a game development library were used. There are also no animations or transitions, which could make the game more visually appealing. However, the focus of this project is on the game logic rather than the visuals.
