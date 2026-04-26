@@ -1,20 +1,22 @@
-# Mini Puzzle Game
+# Mini Snake Game
 
-This is a simple puzzle game made with HTML, CSS, and JavaScript. The game consists of 8 numbered tiles and an empty space. The goal is to arrange the tiles in ascending order from the top left corner.
+This is a simple, console-based implementation of the classic "Snake" game in Python. The game is played on a grid, where the player controls a snake that grows in length as it eats apples. The game ends when the snake collides with itself or the edge of the grid.
 
-## How It Works
+## How it Works
 
-The game is built using pure JavaScript. The tiles are created and assigned a position on the game board. An event listener is added to each tile, which moves the tile to the empty space when clicked, if the tile is adjacent to the empty space.
+The game uses a simple 2D list to represent the grid, with different values representing the snake, apples, and empty spaces. The snake is controlled using the arrow keys, and the game is updated in real-time using a game loop.
 
 ## How to Run
 
-1. Clone this repository.
-2. Open the `index.html` file in a web browser.
+1. Ensure you have Python 3 installed on your machine.
+2. Clone this repository: `git clone <repo_url>`
+3. Navigate to the project directory: `cd game-dev`
+4. Run the game: `python snake_game.py`
 
 ## Example Usage
 
-Click on a tile that is adjacent to the empty space to move it. Try to arrange the tiles in ascending order.
+After running the game, you will see a grid displayed in your console. Use the arrow keys to control the snake and try to eat as many apples as you can. The game ends when the snake collides with itself or the edge of the grid.
 
-## Notes on Architecture & Tradeoffs
+## Architecture & Tradeoffs
 
-This game is implemented using vanilla JavaScript, which keeps the dependencies to a minimum. The tradeoff is that the code may not be as concise or as easy to read as it would be if a game development library were used. There are also no animations or transitions, which could make the game more visually appealing. However, the focus of this project is on the game logic rather than the visuals.
+The game is designed to be simple and easy to understand, with a minimal number of external dependencies. The main tradeoff is that the game uses a console-based interface, which is less visually appealing than a graphical interface. However, this choice keeps the implementation simple and portable.
