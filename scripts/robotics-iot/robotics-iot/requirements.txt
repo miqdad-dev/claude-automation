@@ -1,1 +1,2 @@
 RPi.GPIO==0.7.0
+Adafruit-DHT==1.4.0

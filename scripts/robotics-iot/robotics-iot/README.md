@@ -1,17 +1,11 @@
-# Robotics IOT
+# Raspberry Pi IoT Project
 
-This is a simple project to control a two-wheeled robot using Raspberry Pi's GPIO.
-
-## What it does
-
-The robot can move forward, turn right, turn left and stop based on the commands received.
+This project is a simple Raspberry Pi-based IoT system that reads temperature and humidity data from a DHT11 sensor and logs it to a file.
 
 ## How it works
 
-The robot uses two motors to move. The states of the motors are controlled using Raspberry Pi's GPIO (General Purpose Input/Output). The motors can be in two states: HIGH (running) or LOW (stopped).
+The Python script uses the Adafruit_DHT library to read data from the DHT11 sensor connected to the Raspberry Pi. The data is then logged to a file named sensor_data.log every 3 seconds.
 
 ## How to run
 
-1. Clone the repository.
-2. Connect the motors to the GPIO pins of the Raspberry Pi.
-3. Run the script using Python 3. Example:
+1. Install the dependencies:
