@@ -1,12 +1,23 @@
-# Mini Compiler/Interpreter
+# Mini Compiler
 
-This is a simple lexer and parser that interprets a language that only supports print statements.
+This is a simple compiler built in Python. It compiles code written in a made-up language, which we'll call 'MiniLang', into Python code. 
 
-## How it Works
+## What it does
 
-1. The Lexer tokenizes the source code, breaking it down into recognized symbols.
-2. The Parser then interprets these tokens, executing code as necessary.
+This compiler can interpret simple 'MiniLang' programs. The syntax for 'MiniLang' is as follows:
 
-## How to Run
+- Print a statement: `print ("Hello, World!")`
+- Declare a variable: `var x = 5`
+- Simple arithmetic: `var y = x + 3`
+- If statement: `if (x > y): print ("x is greater")`
 
-Ensure you have Python 3 installed, and then run the following command:
+## How it works
+
+The compiler works in two stages:
+
+1. Lexical Analysis: This is where the source code is converted into tokens.
+2. Parsing: The tokens are then parsed and interpreted.
+
+## How to run
+
+Make sure you have Python installed on your machine. Then, you can run the compiler with the following command:
