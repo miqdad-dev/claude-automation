@@ -1,16 +1,12 @@
-# Distributed Systems Mini Project
+# Distributed Systems: RPC over RabbitMQ
 
-This is a simple distributed system using Python and ZeroMQ. The system is composed of a server that will generate random numbers and send them to multiple clients.
+This distributed system consists of a producer (client) that sends requests to a consumer (server) via RabbitMQ. The consumer computes the Fibonacci number at the requested index and returns the result to the client. 
 
 ## How it works
 
-The project is composed of three parts:
-- A server that generates random workloads and sends them to workers.
-- Workers that receive tasks from the server, execute them and then send a confirmation to the sink.
-- A sink that waits for confirmations from all workers.
+The client sends a request to the server with a unique correlation ID. The server computes the Fibonacci number at the requested index and sends the result back to the client, along with the correlation ID. The client waits for a response that matches its correlation ID.
 
 ## How to run
 
-You will need to have Python and ZeroMQ installed on your machine.
-
-To run the server, open a terminal and type:
+1. Install RabbitMQ and Python
+2. Install the necessary Python modules using pip:
