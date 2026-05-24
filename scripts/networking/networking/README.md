@@ -1,26 +1,25 @@
-# Simple Chat Server and Client
+# Networking Project: Simple Chat App
 
-This project provides a simple implementation of a server-client chat system using Python's `socket` library.
+This is a simple chat application built using Python's built-in socket and threading libraries.
 
-## How it works
+## What It Does
 
-The server listens for incoming connections. When a client connects, the server sends a 'NICK' message to request the client's nickname. The nickname is used to identify the user in the chat.
+It allows multiple clients to connect to a server and send messages to each other.
 
-The client sends and receives messages in separate threads: one thread listens for incoming messages and prints them, and the other thread waits for user input and sends those messages.
+## How It Works
 
-If a client disconnects, the server broadcasts a message to the others to inform them.
+- The server listens for incoming connections from clients.
+- When a client connects, it sends a 'NICK' message to the server indicating it is ready to set its nickname.
+- The server then sends a 'NICK' message to the client to prompt them to set their nickname.
+- Once the nickname is set, the client can start sending messages to the server.
+- The server broadcasts these messages to all connected clients.
+- If a client disconnects, the server notifies all clients that the client has left the chat.
 
-## How to run
+## How to Run
 
 1. Run the server: `python server.py`.
-2. In a separate terminal, run the client: `python client.py`.
+2. In a new terminal window, run the client: `python client.py`.
+3. Enter a nickname when prompted.
+4. Start typing messages into the terminal. They will be broadcast to all connected clients.
 
-## Example usage
-
-After starting the server and client, you will be prompted to enter a nickname. After entering a nickname, you can start typing messages.
-
-## Architecture & Tradeoffs
-
-This is a basic implementation, so it doesn't support features like direct messages or user authentication. The server broadcasts all messages to all clients, so there's no privacy. Also, the server doesn't keep any history, so if a client disconnects they lose all previous messages.
-
-The server and client are both single-threaded, so they can't process multiple requests simultaneously. However, this makes the code simpler and easier to understand.
+## Example Usage
