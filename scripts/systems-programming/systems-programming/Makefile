@@ -1,7 +1,6 @@
-all: main
-
-main: main.c
-	gcc -o main main.c
+all:
+	gcc -o server server.c
+	gcc -o client client.c
 
 clean:
-	rm -f main
+	rm server client

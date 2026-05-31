@@ -1,21 +1,11 @@
-# Key-Value DB
+# Systems Programming Project
+This is a project that demonstrates a basic client-server communication using sockets in C.
 
-A simple in-memory key-value database with a command-line interface.
+## What it does
+This project creates a server and a client. The client sends a message to the server, and the server echoes the same message back to the client.
 
 ## How it works
-
-The program uses a HashMap to store key-value pairs. It reads commands from standard input and writes responses to standard output. The supported commands are:
-
-- `get <key>`: Prints the value for the given key. If the key does not exist, prints "Key not found".
-- `set <key> <value>`: Sets the value for the given key, overriding any existing value.
-- `delete <key>`: Removes the value for the given key.
-- `exit`: Exits the program.
+Both server and client use sockets for communication. The server creates a socket and listens for connections. When the client connects, it sends a message to the server. The server reads this message and sends it back to the client. The client then prints the message it received from the server.
 
 ## How to run
-
-1. Install Rust: https://www.rust-lang.org/tools/install
-2. Clone this repository.
-3. Run `cargo run` in the root directory of the repository.
-4. Enter commands at the prompt.
-
-## Example usage
+To build the project, run:
