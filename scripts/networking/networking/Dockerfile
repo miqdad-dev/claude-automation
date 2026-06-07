@@ -1,7 +1,9 @@
-FROM python:3.8
+FROM python:3.7
 
 WORKDIR /app
 
-COPY . .
+COPY . /app
 
-CMD ["python", "server.py"]
+EXPOSE 55555
+
+CMD [ "python", "./server.py" ]
