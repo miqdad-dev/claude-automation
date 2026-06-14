@@ -1,11 +1,28 @@
-# Encryption-Decryption Microservice
+# Password Strength Checker
 
-This is a simple Flask app that provides two endpoints to encrypt and decrypt data using symmetric encryption.
+This project is a password strength checker that uses regular expressions to evaluate the strength of a password.
 
-## How it works
+# How it works
 
-It uses the cryptography library's Fernet symmetric encryption to encrypt the data. When you send a POST request with some data to the `/encrypt` endpoint, it generates a new key, encrypts the data using that key, and returns both the key and the encrypted data. You can then send the key and the encrypted data to the `/decrypt` endpoint to decrypt the data.
+The function checks for the following password characteristics:
+- At least 8 characters
+- Contains both uppercase and lowercase characters
+- Contains at least one digit
+- Contains at least one special character
 
-## How to run
+# How to run
 
-1. Install the requirements:
+1. Ensure you have Python 3.6+ installed on your machine.
+2. Clone the repository to your local machine.
+3. Navigate to the `security` directory.
+4. Run `python3 password_checker.py` to execute the script.
+
+# Example Usage
+
+Run `python3 password_checker.py`
+
+You will be prompted to enter a password. After entering a password, the script will evaluate the strength of the password and display the result.
+
+# Notes on Architecture & Tradeoffs
+
+The password strength checker uses regular expressions to evaluate the strength of a password, which is a simple and effective approach. However, it may not cover all possible password combinations and can be adjusted based on the password policy of specific applications.
