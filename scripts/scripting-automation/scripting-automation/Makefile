@@ -1,8 +1,4 @@
-run:
-    python3 main.py
+all: test
 
 test:
-    python3 -m unittest test_main.py
-
-lint:
-    pylint --rcfile=.pylintrc main.py
+	python -m unittest discover tests

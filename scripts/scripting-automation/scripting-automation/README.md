@@ -1,13 +1,13 @@
-# Scripting Automation Mini-Project
+# File Extension List Script
 
-## What It Does
+This script lists all files with a specific extension in a given directory.
 
-This script automates the process of downloading, extracting and counting the number of lines in all .txt files from a zipped file located on a given URL.
+## How it works
 
-## How It Works
+The script uses Python's built-in `os` and `argparse` modules to scan a directory and list the files with a specific extension. 
 
-The script uses Python's built-in modules (urllib, zipfile, and os) to download, extract and count lines from the text files respectively. 
+## How to run
 
-## How to Run
-
-Make sure Python3 is installed on your machine. You can run:
+1. Ensure you have Python 3.6+ installed.
+2. Navigate to the `src` directory.
+3. Run the script using the following command:
