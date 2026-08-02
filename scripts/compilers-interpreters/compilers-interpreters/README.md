@@ -1,23 +1,21 @@
-# Mini Compiler
+# Mini Lexer
 
-This is a simple compiler built in Python. It compiles code written in a made-up language, which we'll call 'MiniLang', into Python code. 
+A mini lexer that can parse arithmetic expressions.
 
 ## What it does
 
-This compiler can interpret simple 'MiniLang' programs. The syntax for 'MiniLang' is as follows:
-
-- Print a statement: `print ("Hello, World!")`
-- Declare a variable: `var x = 5`
-- Simple arithmetic: `var y = x + 3`
-- If statement: `if (x > y): print ("x is greater")`
+This lexer can recognize numbers, plus, minus, open parenthesis and close parenthesis tokens. It is a fundamental part of a compiler or interpreter.
 
 ## How it works
 
-The compiler works in two stages:
-
-1. Lexical Analysis: This is where the source code is converted into tokens.
-2. Parsing: The tokens are then parsed and interpreted.
+This lexer uses regular expressions to match the input string to the correct tokens. For example, the regular expression for a number is `\d+`, which matches one or more digits.
 
 ## How to run
 
-Make sure you have Python installed on your machine. Then, you can run the compiler with the following command:
+1. Clone the repository
+2. Navigate to the project's root folder
+3. Install the dependencies: `pip install rply`
+4. Run the main file: `python src/main.py`
+5. Run the tests: `python -m unittest tests/test_main.py`
+
+## Example usage
