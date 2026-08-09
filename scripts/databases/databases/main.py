@@ -1,20 +1,25 @@
-import pandas as pd
-import sqlite3
+from mysql_connector import create_connection, create_database, create_table, execute_query
 
-# Connect to SQLite database
-conn = sqlite3.connect('example.db')
+create_database_query = "CREATE DATABASE test_db"
+create_users_table = """
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT, 
+  name TEXT NOT NULL, 
+  email TEXT NOT NULL UNIQUE, 
+  age INT, 
+  PRIMARY KEY (id)
+) ENGINE = InnoDB
+"""
 
-# Read CSV data
-data = pd.read_csv('data/sample.csv')
+insert_users = """
+INSERT INTO users (name, email, age) VALUES 
+('James', 'james@example.com', 25),
+('Julia', 'julia@example.com', 30),
+('Richard', 'richard@example.com', 35),
+('Diana', 'diana@example.com', 40)
+"""
 
-# Write data to SQLite database
-data.to_sql('sample', conn, if_exists='replace')
-
-# Read data from SQLite database
-df = pd.read_sql_query('SELECT * FROM sample', conn)
-
-# Print data
-print(df)
-
-# Close connection
-conn.close()
+connection = create_connection("db", "root", "password")
+create_database(connection, create_database_query)
+create_table(connection, create_users_table)
+execute_query(connection, insert_users)

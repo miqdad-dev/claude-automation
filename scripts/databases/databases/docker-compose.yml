@@ -1,9 +1,16 @@
-version: '3.8'
+version: '3.1'
 
 services:
-  app:
-    build: .
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "5000:5000"
-    volumes:
-      - .:/app
+      - 8080:8080
