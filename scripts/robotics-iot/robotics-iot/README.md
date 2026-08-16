@@ -1,18 +1,25 @@
-# Robotics IoT Project
+# IoT System with Raspberry Pi and MQTT
 
-This project implements a simple IoT (Internet of Things) system that simulates a robot's movements. The robot receives instructions and updates its position based on those instructions. 
+This project sets up a simple IoT system that uses a Raspberry Pi to read temperature and humidity data from a DHT11 sensor and sends the data to a server using MQTT protocol. The server then saves the data in a JSON file.
 
-## What It Does
+## How it works
 
-This is a simulation of a basic IoT robot. The robot starts at position (0,0) and it can move in four directions: up, down, left, right. Each move changes the robot's position by one unit.
+There are two main components in this system: the sensor module and the server module.
 
-## How It Works
+The sensor module uses the Adafruit_DHT library to read data from a DHT11 sensor connected to a Raspberry Pi. The data is then sent to a MQTT broker running on localhost using the paho-mqtt library.
 
-This application is written in Python. It uses a simple command listener to receive commands through the terminal. The command listener then processes these commands and updates the robot's position accordingly.
+The server module uses the paho-mqtt library to connect to the MQTT broker and subscribe to the "home/sensor" topic. When it receives a message, it saves the data in a JSON file.
 
-## How to Run
+## How to run
 
-1. Install python3 if you haven't already.
-2. Clone the repository.
-3. Navigate to the project directory.
-4. Run the robot.py script with python3.
+1. Install the required libraries: `pip install paho-mqtt Adafruit_DHT`
+2. Run the server: `python3 server.py`
+3. In a separate terminal, run the sensor module: `python3 sensor.py`
+
+## Example usage
+
+After running the sensor and server modules, the server will start receiving temperature and humidity data from the sensor and save it in a `data.json` file.
+
+## Notes on architecture and trade-offs
+
+This system uses MQTT, which is a lightweight and efficient protocol designed for IoT devices. However, it assumes that the server and the sensor are running on the same machine. In a real-world scenario, they would likely be running on different machines, and you would need to set up a MQTT broker accessible over the internet.
