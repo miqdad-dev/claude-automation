@@ -1,25 +1,26 @@
 # Frontend Web App
 
-This is a simple e-commerce shopping cart feature. It allows users to add items to the cart and view them. The shopping cart updates in real-time when items are added.
+This application is a simple frontend web app that takes an input and queries an API to find related Wikipedia articles. It handles concurrency using Promises and uses the Fetch API.
 
-## How it works
+## How It Works
 
-The app uses JavaScript events and DOM manipulation to update the cart in real-time when an item is added. 
+The app uses the Fetch API to query the Wikipedia API. The Fetch API returns a Promise that is resolved to the Response to that request, whether it is successful or not. The app then uses the `.json()` method of the Response object to read the body content as JSON.
 
-## How to run 
+## How To Run
 
-1. Clone the repository
-2. Navigate to the root directory (`frontend-web-app`)
-3. Run `npm install` to install dependencies
-4. Run `npm start` to start the app
-5. Visit `http://localhost:3000` in your browser
+1. Clone the repository.
+2. Open the index.html file in a web browser.
 
-## Example usage
+## Example Usage
 
-Click on the 'Add to cart' button next to an item to add it to the cart. The cart contents are displayed below.
+1. Enter a search term into the input box.
+2. Click the 'Search' button.
+3. The app will display a list of related Wikipedia articles.
 
 ## Architecture & Tradeoffs
 
-The app is built with simplicity in mind, so it only includes a basic functionality. There is no backend or database, and the cart contents do not persist if the page is refreshed. 
+The app is designed as a single-page application (SPA) for simplicity. This means that it does not require a server to run, but it also means that it is entirely client-side and cannot handle server-side logic.
 
-As a trade-off for its simplicity, the app does not support multiple quantities of the same item, removing items from the cart, or checkout functionality. These could be added in a more full-featured version of the app.
+The app uses the Fetch API instead of the older XMLHttpRequest for making HTTP requests. This has the advantage of being more modern and flexible, but it may not be supported in all browsers.
+
+The app uses Promises to handle concurrency. This allows it to perform multiple requests at once and handle them in whichever order they complete, but it also means that the app may not work as expected if the requests fail.

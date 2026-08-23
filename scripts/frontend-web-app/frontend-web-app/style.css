@@ -2,15 +2,19 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.item {
-    margin-bottom: 10px;
+form {
+    margin-bottom: 1em;
 }
 
-#cart {
-    margin-top: 20px;
-}
-
-#cart-items {
+#results {
     list-style-type: none;
     padding: 0;
+}
+
+#results li {
+    margin-bottom: 1em;
+}
+
+#results li a {
+    text-decoration: none;
 }
