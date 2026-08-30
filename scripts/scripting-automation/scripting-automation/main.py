@@ -1,31 +1,43 @@
-import urllib.request
-import zipfile
 import os
+import shutil
+import sys
 
-def download_file(url):
-    filename = url.split("/")[-1]
-    urllib.request.urlretrieve(url, filename)
-    return filename
+def get_files_from_dir(dir_path):
+    """
+    Get all files from directory
+    """
+    files = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    return files
 
-def extract_file(filename):
-    with zipfile.ZipFile(filename, 'r') as zip_ref:
-        zip_ref.extractall()
+def categorize_files(files, dir_path):
+    """
+    Categorize files by their extensions
+    """
+    categorized_files = {}
+    for file in files:
+        file_ext = file.split('.')[-1]
+        if file_ext not in categorized_files:
+            categorized_files[file_ext] = []
+        categorized_files[file_ext].append(os.path.join(dir_path, file))
+    return categorized_files
 
-def count_lines():
-    total_lines = 0
-    for filename in os.listdir():
-        if filename.endswith('.txt'):
-            with open(filename, 'r') as file:
-                for line in file:
-                    total_lines += 1
-    return total_lines
+def move_files(categorized_files, target_dir):
+    """
+    Move files to their respective extension-named directories
+    """
+    for ext in categorized_files:
+        target_sub_dir = os.path.join(target_dir, ext)
+        if not os.path.exists(target_sub_dir):
+            os.makedirs(target_sub_dir)
+        for file_path in categorized_files[ext]:
+            shutil.move(file_path, target_sub_dir)
 
 def main():
-    url = input("Enter the URL of a zipped file: ")
-    filename = download_file(url)
-    extract_file(filename)
-    total_lines = count_lines()
-    print(f"Total number of lines in all .txt files: {total_lines}")
+    source_dir = sys.argv[1]
+    target_dir = sys.argv[2]
+    files = get_files_from_dir(source_dir)
+    categorized_files = categorize_files(files, source_dir)
+    move_files(categorized_files, target_dir)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
