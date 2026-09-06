@@ -1,16 +1,18 @@
-# CSV Loader
+# Data Engineering Mini Project
 
-This is a simple CSV file loader that loads data from CSV file into a PostgreSQL database.
+## Description
 
-## How it works
+This is a mini-hard project in the field of data engineering. The project reads a CSV file, cleans the data and calculates the average age.
 
-The script `load_csv.py` reads a CSV file row by row and inserts each row as a new record in the specified PostgreSQL table.
+## How it Works
 
-## How to run
+The project is written in Python and uses the pandas library for data manipulation and numpy for handling NaN values. 
 
-1. Ensure you have Python and PostgreSQL installed on your machine.
-2. Install the required Python library: `pip install psycopg2`.
-3. Update the database connection configuration in `load_csv.py` if needed.
-4. Run the script with the CSV file name and the database table name as arguments: `python load_csv.py <file_name> <table_name>`.
+The `app.py` script contains the following functions:
+- `load_data()`: reads a CSV file and returns a pandas DataFrame
+- `clean_data()`: replaces empty strings with NaN, then drops rows with NaN values
+- `get_average_age()`: calculates and returns the average age
 
-## Example usage
+## How to Run
+
+1. Install the required dependencies:
