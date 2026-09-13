@@ -1,14 +1,18 @@
-# File Organizer
+# Scripting Automation
 
-This script is used to organize files in a directory by their extensions. It will create subdirectories in target directory named by file extensions and move the files to their respective subdirectories.
+This project is a simple web scraper that fetches and parses the weather forecast from a weather website, providing data on the weather for the next 7 days.
 
 ## How it works
 
-1. The script first reads all the files in the source directory.
-2. Then it categorizes the files by their extensions.
-3. Finally, it moves the files to their respective extension-named directories in the target directory.
+The script uses the BeautifulSoup library to parse the HTML of the website. It then uses this parsed information to extract the weather forecast data. 
 
 ## How to run
 
-1. Install Python 3.x
-2. Run the script by using command:
+1. Clone the repository
+2. Navigate to the project root directory (`scripting-automation`)
+3. Install required dependencies using pip: `pip install -r requirements.txt`
+4. Run the script: `python scraper.py`
+
+## Example usage
+
+After running `python scraper.py`, you will see output similar to the following:
