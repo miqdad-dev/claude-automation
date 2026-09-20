@@ -1,41 +1,68 @@
+#include <pthread.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <stdlib.h>
 
-int main(int argc, char **argv) {
-    if (argc != 3) {
-        printf("Usage: %s <source-file> <destination-file>\n", argv[0]);
-        return 1;
+#define MAX 10
+int nums[MAX] = {7, 2, 1, 6, 8, 5, 3, 4, 9, 10};
+
+typedef struct {
+    int start, end;
+} Params;
+
+void merge(int start, int mid, int end) {
+    int temp[MAX];
+    int i = start, j = mid + 1, k = 0;
+
+    while (i <= mid && j <= end) {
+        if (nums[i] < nums[j])
+            temp[k++] = nums[i++];
+        else
+            temp[k++] = nums[j++];
     }
 
-    int src_fd = open(argv[1], O_RDONLY);
-    if (src_fd == -1) {
-        perror("open source file");
-        return 1;
+    while (i <= mid)
+        temp[k++] = nums[i++];
+
+    while (j <= end)
+        temp[k++] = nums[j++];
+
+    for (i = start; i <= end; i++)
+        nums[i] = temp[i - start];
+}
+
+void* merge_sort(void* arg) {
+    Params* params = (Params*)arg;
+    int mid;
+
+    if (params->start < params->end) {
+        mid = (params->start + params->end) / 2;
+
+        Params left = {params->start, mid};
+        Params right = {mid + 1, params->end};
+
+        pthread_t tid1, tid2;
+        pthread_create(&tid1, NULL, merge_sort, &left);
+        pthread_create(&tid2, NULL, merge_sort, &right);
+
+        pthread_join(tid1, NULL);
+        pthread_join(tid2, NULL);
+
+        merge(params->start, mid, params->end);
     }
 
-    int dest_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (dest_fd == -1) {
-        perror("open destination file");
-        return 1;
-    }
+    return NULL;
+}
 
-    char buf[4096];
-    ssize_t bytes;
-    while ((bytes = read(src_fd, buf, sizeof buf)) > 0) {
-        if (write(dest_fd, buf, bytes) != bytes) {
-            perror("write");
-            return 1;
-        }
-    }
+int main() {
+    int i;
+    pthread_t tid;
+    Params params = {0, MAX - 1};
 
-    if (bytes == -1) {
-        perror("read");
-        return 1;
-    }
+    pthread_create(&tid, NULL, merge_sort, &params);
+    pthread_join(tid, NULL);
 
-    close(src_fd);
-    close(dest_fd);
+    for (i = 0; i < MAX; i++)
+        printf("%d ", nums[i]);
 
     return 0;
 }

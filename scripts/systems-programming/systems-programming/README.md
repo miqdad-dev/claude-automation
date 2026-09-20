@@ -1,11 +1,11 @@
-# Systems Programming Project
-This is a project that demonstrates a basic client-server communication using sockets in C.
+# Threaded Merge Sort in C
 
-## What it does
-This project creates a server and a client. The client sends a message to the server, and the server echoes the same message back to the client.
+The project is a simple implementation of Merge Sort algorithm using threads in C. Given an array of numbers, it sorts the numbers in ascending order.
 
-## How it works
-Both server and client use sockets for communication. The server creates a socket and listens for connections. When the client connects, it sends a message to the server. The server reads this message and sends it back to the client. The client then prints the message it received from the server.
+## How it Works
 
-## How to run
-To build the project, run:
+The program creates a new thread for each recursive call to the merge sort function. The threaded merge sort function takes a structure as argument which contains the indices of the start and end of the array segment to sort. The array is sorted in-place.
+
+## How to Run
+
+Ensure you have `gcc` installed on your machine. Run the following commands to compile and run the program:
